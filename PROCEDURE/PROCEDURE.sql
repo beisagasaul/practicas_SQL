@@ -157,3 +157,64 @@ END //
 DELIMITER ;
 
 CALL PA10
+
+
+
+
+    USE COMPRAS ;
+
+    -- Procedimiento Almacenado que muestre el nombre de la empresa, la ciudad y
+-- ubicación de su sucursal en la misma. Escribir el comando de creación del STORED
+-- PROCEDURE, luego almacenarlo junto a la Base de datos COMPRAS. Así mismo
+-- escribir el comando de ejecución o llamado del procedimiento almacenado.
+    DELIMITER //
+    CREATE PROCEDURE PA_1()
+    BEGIN
+
+    SELECT  E.NOMBREEMP,S.CIUDAD,S.DIRECCIONSUC
+    FROM EMPRESA E JOIN SUCURSAL S ON
+    E.NITEMP=S.NITEMP;
+
+    END //
+    DELIMITER ;
+
+
+CALL PA_1();
+
+-- Procedimiento Almacenado PA_Ejemplo2, que muestre la lista de 
+-- personal cuya
+-- edad esta entre 25 y 40 años, agrupando por Empresa, 
+-- ordenando en forma
+-- alfabética por nombre del funcionario.
+
+DELIMITER //
+CREATE PROCEDURE PA_2()
+BEGIN
+SELECT E.NOMBREEMP,P.NOMBREPER, P.EDAD
+FROM PERSONAL P JOIN EMPRESA E ON P.NITEMP=E.NITEMP
+WHERE EDAD BETWEEN 25 AND 40
+GROUP BY E.NOMBREEMP, P.NOMBREPER, P.EDAD
+ORDER BY  P.NOMBREPER ASC;
+END //
+DELIMITER ;
+
+
+ CALL PA_2();
+
+
+-- Procedimiento Almacenado PA_Ejemplo3, que muestre La cantidad de
+-- funcionarios de sexo masculino cuyo nombre comienza con A, para 
+-- cada empresa.
+
+DELIMITER //
+    CREATE PROCEDURE PA_3()
+   BEGIN
+
+   SELECT COUNT(P.ITEMPER),E.NOMBREEMP
+   FROM PERSONAL P JOIN EMPRESA E ON P.NITEMP=E.NITEMP
+   WHERE P.SEXO='M' AND (P.NOMBREPER LIKE 'J%')
+   GROUP BY E.NOMBREEMP;
+   END //
+   DELIMITER ;
+
+CALL PA_3();
